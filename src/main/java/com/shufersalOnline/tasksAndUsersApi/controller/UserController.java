@@ -47,7 +47,6 @@ public class UserController {
     }
     @GetMapping("/users/{userId}/tasks/{taskId}/comments")
     public ResponseEntity<List<Comment>> getCommentsForUser(@PathVariable Long userId, @PathVariable Long taskId) {
-        // First, you may want to check if the user and task exist. If not found, return a 404 Not Found response.
         Optional<User> userOptional = userRepository.findById(userId);
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
