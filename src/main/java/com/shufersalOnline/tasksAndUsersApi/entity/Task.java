@@ -1,8 +1,6 @@
 package com.shufersalOnline.tasksAndUsersApi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -18,8 +16,8 @@ public class Task {
     private Status status; //pending/completed/archived
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "OWNER_ID") // This creates a foreign key column in the Task table
-    private User assignee;//owner
+    @JoinColumn(name = "user_id") // This creates a foreign key column in the Task table
+    private User assignee = null;//owner
 
     @OneToMany(mappedBy = "task")
     private List<Comment> taskCommentsList;
@@ -30,56 +28,54 @@ public class Task {
         this.status=status;
         this.assignee = assignee;
     }
+    public Task(Long id, String title, String description, Status status){
+        this.id=id;
+        this.title=title;
+        this.description=description;
+        this.status=status;
+    }
 
-    public List<Comment> getTaskCommentsList() {
-        return taskCommentsList;
-    }
-    public void setTaskCommentsList(List<Comment> taskCommentsList) {
-        this.taskCommentsList=taskCommentsList;
-    }
+  //getters
     public Long getId() {
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String name) {
-        this.title = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
     public User getAssignee() {
         return assignee;
     }
-
-    public void setAssignee(User assignee) {
-        this.assignee = assignee;
+    public List<Comment> getTaskCommentsList() {
+        return taskCommentsList;
     }
 
+
+    //setters
     public void setStatus(Status status){
         this.status=status;
     }
     public Status getStatus(){
         return status;
     }
-
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public void setTitle(String name) {
+        this.title = name;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+    public void setTaskCommentsList(List<Comment> taskCommentsList) {
+        this.taskCommentsList=taskCommentsList;
+    }
 }
 
-enum Status {
-    PENDING,
-    COMPLETED,
-    ARCHIVED
-}
+
 

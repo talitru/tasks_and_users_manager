@@ -1,5 +1,6 @@
 package com.shufersalOnline.tasksAndUsersApi.service;
 
+import com.shufersalOnline.tasksAndUsersApi.dto.TaskDto;
 import com.shufersalOnline.tasksAndUsersApi.dto.UserDto;
 import com.shufersalOnline.tasksAndUsersApi.entity.User;
 import com.shufersalOnline.tasksAndUsersApi.exception.AuthorizationException;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImp  implements UserService{
+public class UserServiceImp implements UserService{
 
     private UserRepository userRepository;
 
@@ -24,6 +25,11 @@ public class UserServiceImp  implements UserService{
         List<User> usersList = userRepository.findAll();
         return usersList.stream().map((user)->UserMapper.mapToUserDto((user)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDto> getAllUserTasks(Long userId) {
+        return null;
     }
 
     @Override
