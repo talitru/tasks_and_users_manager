@@ -11,7 +11,8 @@ public class UserDto {
     private boolean isActive;
     private boolean isAdmin;
 
-    public UserDto(String name, String password, String email, boolean isActive, boolean isAdmin) {
+    public UserDto(Long id, String name, String password, String email, boolean isActive, boolean isAdmin) {
+        this.id=id;
         this.name = name;
         this.password = password;
         this.email = email;
@@ -24,6 +25,9 @@ public class UserDto {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -43,7 +47,6 @@ public class UserDto {
     public boolean isAdmin() {
         return isAdmin;
     }
-
 
     //setters
 
@@ -66,6 +69,5 @@ public class UserDto {
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
-
 
 }

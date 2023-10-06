@@ -24,11 +24,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> commentsOwned;
 
-
-
     protected User(){}
 
-    public User(String name, String password,String email, boolean isActive, boolean isAdmin){
+    public User(Long id,String name, String password,String email, boolean isActive, boolean isAdmin){
+        this.id=id;
         this.name = name;
         this.password = password;
         this.email = email;
