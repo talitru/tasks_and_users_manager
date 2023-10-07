@@ -23,11 +23,50 @@ public class Comment {
     private LocalDate timeStamp;
     private String comment;
 
-    public Comment(User user, Task task, LocalDate timeStamp, String comment){
-        this.user=user;
+    public Comment(User user, Task task, LocalDate timeStamp, String comment) {
+        this.user = user;
+        this.task = task;
+        this.timeStamp = timeStamp;
+        this.comment = comment;
+    }
+
+    //getters
+
+    public Long getId(){
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public LocalDate getTimeStamp() {
+        return timeStamp;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    //setters
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTask(Task task) {
         this.task=task;
-        this.timeStamp=timeStamp;
-        this.comment=comment;
+    }
+
+    public void setTimeStamp(LocalDate timeStamp){
+        this.timeStamp = timeStamp;
+    }
+
+    public void setComment(String comment){
+        this.comment = comment;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.shufersalOnline.tasksAndUsersApi.service;
 
-import com.shufersalOnline.tasksAndUsersApi.dto.TaskDto;
 import com.shufersalOnline.tasksAndUsersApi.dto.UserDto;
 import com.shufersalOnline.tasksAndUsersApi.entity.User;
 import com.shufersalOnline.tasksAndUsersApi.exception.AuthorizationException;
@@ -9,6 +8,7 @@ import com.shufersalOnline.tasksAndUsersApi.mapper.UserMapper;
 import com.shufersalOnline.tasksAndUsersApi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +28,12 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public List<TaskDto> getAllUserTasks(Long userId) {
-        return null;
+    public UserDto getUserById(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(()-> new
+                ResourceNotFoundException("user not exists with the given id "+userId));
+
+        return UserMapper.mapToUserDto(user);
     }
 
     @Override
@@ -49,18 +53,10 @@ public class UserServiceImp implements UserService{
         return UserMapper.mapToUserDto(savedUser);
     }
 
-    @Override
-    public UserDto getUserById(Long userId) {
-
-        User user = userRepository.findById(userId).orElseThrow(()-> new
-                ResourceNotFoundException("user not exists with the given id "+userId));
-
-        return UserMapper.mapToUserDto(user);
-    }
 
     @Override
     public UserDto updateUser(Long userId, UserDto updatedUser) {
-        User user = userRepository.findById(userId).orElseThrow(()->new
+        User user = userRepository.findById(userId).orElseThrow(()-> new
                 ResourceNotFoundException("user not exists with the given id "+userId));
 
         user.setName(updatedUser.getName());
@@ -78,6 +74,19 @@ public class UserServiceImp implements UserService{
         User user = userRepository.findById(userId).orElseThrow(()->new
                 ResourceNotFoundException("user not exists with the given id "+userId));
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public boolean isUserExists(Long userId) {
+        return userRepository.findById(userId).isEmpty()?false:true;
+    }
+
+    public boolean isAdminUser(Long userId){
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isEmpty()&&user.get().isAdmin()){
+            return true;
+        }
+        return false;
     }
 
 }

@@ -1,9 +1,6 @@
 package com.shufersalOnline.tasksAndUsersApi.service;
 
-
 import com.shufersalOnline.tasksAndUsersApi.dto.TaskDto;
-import com.shufersalOnline.tasksAndUsersApi.entity.Task;
-
 import java.util.List;
 
 public interface TaskService {
@@ -16,7 +13,7 @@ public interface TaskService {
     TaskDto updateTask(Long userId, Long taskId, TaskDto updatedTask);
     void markTaskAsCompleted(Long userId, Long taskId);
     void deleteTask(Long userId, Long taskId);
-    void reassignOrAssignTask(Long userId, Long taskId);
+    void assignTask(Long userId, Long taskId,Long assigneeId);
     void markCompletedTasksAsArchived(Long userId, Long taskId);
 
 }
