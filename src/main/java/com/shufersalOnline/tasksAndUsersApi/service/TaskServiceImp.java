@@ -40,7 +40,7 @@ public class TaskServiceImp implements TaskService{
     public List<TaskDto> getAllUserTasks(Long userId) {
 
         UserDto userDto = userService.getUserById(userId);//throw an exception if not exists
-        List<TaskDto> tasksList = taskRepository.findByUserId(userId).stream()
+        List<TaskDto> tasksList = taskRepository.findByAssigneeId(userId).stream()
                 .map((task)->TaskMapper.mapToTaskDto(task)).collect(Collectors.toList());
 
         return tasksList;
@@ -49,7 +49,7 @@ public class TaskServiceImp implements TaskService{
     @Override
     public TaskDto getSpecificUserTask(Long userId, Long taskId) {
 
-        Task task = taskRepository.findByUserIdAndTaskId(userId,taskId);
+        Task task = taskRepository.findByAssigneeIdAndId(userId,taskId);
         if(task==null){
             throw new ResourceNotFoundException("user or task not exists with the given id");
         }

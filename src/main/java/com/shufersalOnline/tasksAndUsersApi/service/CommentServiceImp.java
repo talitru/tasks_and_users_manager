@@ -22,11 +22,11 @@ public class CommentServiceImp implements CommentService{
 
     @Override
     public List<Comment> getAllCommentsOfUserTask(Long userId, Long taskId) {
-        return commentRepository.findByUserAndTask(userId, taskId);
+        return commentRepository.findByUserIdAndTaskId(userId, taskId);
     }
 
     @Override
     public List<Comment> getAllCommentsOfUser(Long userId) {
-        return commentRepository.findByTUserId(userId);
+        return commentRepository.findByUserId(userId);
     }
 }
