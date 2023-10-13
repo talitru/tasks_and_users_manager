@@ -70,10 +70,17 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId, Long userToDeleteId) {
         User user = userRepository.findById(userId).orElseThrow(()->new
                 ResourceNotFoundException("user not exists with the given id "+userId));
-        userRepository.deleteById(userId);
+
+        if(!user.isAdmin()){
+            throw new AuthorizationException("You are not admin user! Only admin" +
+                    " users are allowed to delete users");
+        }
+        User userToDelete = userRepository.findById(userId).orElseThrow(()->new
+                ResourceNotFoundException("user to delete not exists with the given id "+userToDeleteId));
+        userRepository.deleteById(userToDeleteId);
     }
 
     @Override

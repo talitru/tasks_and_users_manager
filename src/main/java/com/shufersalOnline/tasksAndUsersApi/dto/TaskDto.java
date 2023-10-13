@@ -8,7 +8,7 @@ public class TaskDto {
     private String title;
     private String description;
     private Status status; //pending/completed/archived
-    private User assignee = null;  // Assuming you want to include the user's ID in the DTO
+    private User assignee = null;
 
     public TaskDto(Long id, String title, String description, Status status) {
         this.id = id;
@@ -16,6 +16,7 @@ public class TaskDto {
         this.description = description;
         this.status = status;
     }
+    public TaskDto(){}
 
     public TaskDto(Long id, String title, String description, Status status, User assignee) {
         this.id = id;

@@ -3,7 +3,6 @@ package com.shufersalOnline.tasksAndUsersApi.controller;
 import com.shufersalOnline.tasksAndUsersApi.dto.TaskDto;
 import com.shufersalOnline.tasksAndUsersApi.service.TaskService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

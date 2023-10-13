@@ -5,10 +5,12 @@ public class UserDto {
 
     private Long id;
     private String name;
-    private String password; //hashed
+    private String password;
     private String email;
     private boolean isActive;
     private boolean isAdmin;
+
+    public UserDto(){}
 
     public UserDto(Long id, String name, String password, String email, boolean isActive, boolean isAdmin) {
         this.id=id;

@@ -10,10 +10,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "task_id")
     private Long id;
+
     private String title;
     private String description;
+
     @Enumerated(EnumType.STRING)
-    private Status status; //pending/completed/archived
+    private Status status = Status.PENDING; //pending/completed/archived
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // This creates a foreign key column in the Task table
@@ -28,12 +30,15 @@ public class Task {
         this.status=status;
         this.assignee = assignee;
     }
+
     public Task(Long id, String title, String description, Status status){
         this.id=id;
         this.title=title;
         this.description=description;
         this.status=status;
     }
+
+    public Task(){}
 
   //getters
     public Long getId() {

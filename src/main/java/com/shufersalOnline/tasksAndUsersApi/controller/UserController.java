@@ -1,19 +1,11 @@
 package com.shufersalOnline.tasksAndUsersApi.controller;
 
 import com.shufersalOnline.tasksAndUsersApi.dto.UserDto;
-import com.shufersalOnline.tasksAndUsersApi.entity.Comment;
-import com.shufersalOnline.tasksAndUsersApi.entity.Task;
-import com.shufersalOnline.tasksAndUsersApi.entity.User;
-import com.shufersalOnline.tasksAndUsersApi.repository.CommentRepository;
-import com.shufersalOnline.tasksAndUsersApi.repository.TaskRepository;
-import com.shufersalOnline.tasksAndUsersApi.repository.UserRepository;
 import com.shufersalOnline.tasksAndUsersApi.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 //@RequestMapping("/users")
@@ -59,10 +51,11 @@ public class UserController {
     }
 
     //delete specific user
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId){
+    @DeleteMapping("/users/{userId}/delete/{userToDeleteId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId,
+                                             @PathVariable Long userToDeleteId){
 
-        userService.deleteUser(userId);
+        userService.deleteUser(userId,userToDeleteId);
         return ResponseEntity.ok("user deleted successfully.");
     }
 }

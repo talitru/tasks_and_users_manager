@@ -8,7 +8,6 @@ import com.shufersalOnline.tasksAndUsersApi.entity.User;
 import com.shufersalOnline.tasksAndUsersApi.exception.AuthorizationException;
 import com.shufersalOnline.tasksAndUsersApi.exception.ResourceNotFoundException;
 import com.shufersalOnline.tasksAndUsersApi.mapper.TaskMapper;
-import com.shufersalOnline.tasksAndUsersApi.mapper.UserMapper;
 import com.shufersalOnline.tasksAndUsersApi.repository.TaskRepository;
 import com.shufersalOnline.tasksAndUsersApi.repository.UserRepository;
 
@@ -40,8 +39,14 @@ public class TaskServiceImp implements TaskService{
     public List<TaskDto> getAllUserTasks(Long userId) {
 
         UserDto userDto = userService.getUserById(userId);//throw an exception if not exists
+
         List<TaskDto> tasksList = taskRepository.findByAssigneeId(userId).stream()
                 .map((task)->TaskMapper.mapToTaskDto(task)).collect(Collectors.toList());
+
+        // Filter out archived tasks
+        tasksList = tasksList.stream()
+                .filter(taskDto -> taskDto.getStatus() != Status.ARCHIVED)
+                .collect(Collectors.toList());
 
         return tasksList;
     }
@@ -63,7 +68,8 @@ public class TaskServiceImp implements TaskService{
         Task task= taskRepository.findById(taskId).orElseThrow(() ->
                 new ResourceNotFoundException("task not exists with the given id "+taskId));
 
-        return TaskMapper.mapToTaskDto(task);
+        //An archived task is not visible to the user.
+        return task.getStatus().equals(Status.ARCHIVED) ? null : TaskMapper.mapToTaskDto(task);
     }
 
     @Override
@@ -101,10 +107,14 @@ public class TaskServiceImp implements TaskService{
     public void markTaskAsCompleted(Long userId, Long taskId) {
         User user = userRepository.findById(userId).orElseThrow(()->new
                 ResourceNotFoundException("user not exists with the given id "+userId));
+
         Task task = taskRepository.findById(taskId).orElseThrow(()->new
                 ResourceNotFoundException("task not exists with the given id "+taskId));
-        if(task.getAssignee().getId().equals( userId)){
+
+        if(task.getAssignee() != null && task.getAssignee().getId().equals( userId)){
             task.setStatus(Status.COMPLETED);
+        } else {
+            throw new AuthorizationException("THERE IS NO ASSIGNEE");
         }
 
     }
@@ -114,7 +124,7 @@ public class TaskServiceImp implements TaskService{
 
         User user = userRepository.findById(userId).orElseThrow(()->new
                 ResourceNotFoundException("user not exists with the given id "+userId));
-        if(user.isAdmin()){
+        if(!user.isAdmin()){
             throw new AuthorizationException("You are not admin user! Only admin" +
                     " users are allowed to delete tasks");
         }
@@ -147,7 +157,7 @@ public class TaskServiceImp implements TaskService{
     public void markCompletedTasksAsArchived(Long userId, Long taskId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new
                 ResourceNotFoundException("user not exists with the given id " + userId));
-        if (user.isAdmin()) {
+        if (!user.isAdmin()) {
             throw new AuthorizationException("You are not admin user! Only admin" +
                     " users are allowed to delete tasks");
         }

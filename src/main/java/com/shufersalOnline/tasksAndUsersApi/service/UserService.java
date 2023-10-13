@@ -9,7 +9,7 @@ public interface UserService {
      UserDto createUser(Long userId, UserDto userDto);
      UserDto getUserById(Long userId);
      UserDto updateUser(Long userId, UserDto updatedUser);
-     void deleteUser(Long userId);
+     void deleteUser(Long userId, Long userToDeleteId);
      boolean isUserExists(Long userId);
 
 

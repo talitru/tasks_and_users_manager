@@ -1,10 +1,7 @@
 package com.shufersalOnline.tasksAndUsersApi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 public class Comment {
@@ -22,6 +19,9 @@ public class Comment {
 
     private LocalDate timeStamp;
     private String comment;
+
+    public Comment(){}
+
 
     public Comment(User user, Task task, LocalDate timeStamp, String comment) {
         this.user = user;
