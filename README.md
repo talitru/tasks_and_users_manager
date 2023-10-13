@@ -38,18 +38,26 @@ adding comments to tasks, and more.
 
 ## Steps to Run the Application
 
-1. Open Your Project:
+1. Clone the Repository:
+
+    -Open your terminal or command prompt and navigate to the empty folder
+   where you want to clone the project.
+
+    -Then run the following command to clone the repository:
+   "git clone git@github.com:talitru/tasks_and_users_manager.git"
+
+2. Open Your Project:
 
     - Open IntelliJ IDEA.
     - Select "File" > "Open" and navigate to your project directory.
     - Click "Open" to load your project.
    
-2. Locate the Main Class:
+3. Locate the Main Class:
     - Find the main class of your Spring Boot application.
    This class  contains a `main` method in `TasksAndUsersApiApplication` class.
 
 
-3. Run the Application:
+4. Run the Application:
 
     - Open the `TasksAndUsersApiApplication.java` file, which should be your main class.
     - Click the green arrow to start the application.
@@ -57,7 +65,7 @@ adding comments to tasks, and more.
 
 ## How to test the Application
 
-4. Run The Unit Tests:
+Run The Unit Tests:
 
     - Navigate to `src/test/java/com/shufersalOnline/tasksAndUsersApi` directory that contains my test classes.
     - This directory typically includes subdirectories for unit tests and integration tests.
