@@ -2,22 +2,28 @@ package com.shufersalOnline.tasksAndUsersApi.service;
 
 import com.shufersalOnline.tasksAndUsersApi.dto.TaskDto;
 import com.shufersalOnline.tasksAndUsersApi.dto.UserDto;
+import com.shufersalOnline.tasksAndUsersApi.entity.OffensiveWords;
 import com.shufersalOnline.tasksAndUsersApi.entity.Status;
 import com.shufersalOnline.tasksAndUsersApi.entity.Task;
 import com.shufersalOnline.tasksAndUsersApi.entity.User;
 import com.shufersalOnline.tasksAndUsersApi.exception.AuthorizationException;
 import com.shufersalOnline.tasksAndUsersApi.exception.ResourceNotFoundException;
 import com.shufersalOnline.tasksAndUsersApi.mapper.TaskMapper;
+import com.shufersalOnline.tasksAndUsersApi.repository.OffensiveWordsRepository;
 import com.shufersalOnline.tasksAndUsersApi.repository.TaskRepository;
 import com.shufersalOnline.tasksAndUsersApi.repository.UserRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImp implements TaskService{
 
+    @Autowired
+    private OffensiveWordsRepository offensiveWordsRepository;
     private TaskRepository taskRepository;
     private UserRepository userRepository;
     private UserService userService;
@@ -83,7 +89,10 @@ public class TaskServiceImp implements TaskService{
                     " users are allowed to create new users");
         }
 
+        String filteredDescription = filterOffensiveWords(taskDto.getDescription());
+
         Task task= TaskMapper.mapToTask(taskDto);
+        task.setDescription(filteredDescription);
         Task savedTask= taskRepository.save(task);
 
         return TaskMapper.mapToTaskDto(savedTask);
@@ -95,8 +104,11 @@ public class TaskServiceImp implements TaskService{
         Task task = taskRepository.findById(userId).orElseThrow(()-> new
                 ResourceNotFoundException("user not exists with the given id "+userId));
 
+        // Filter offensive words in the updated task description
+        String filteredDescription = filterOffensiveWords(updatedTask.getDescription());
+
         task.setTitle(updatedTask.getTitle());
-        task.setDescription(updatedTask.getDescription());
+        task.setDescription(filteredDescription);
         task.setStatus(updatedTask.getStatus());
 
         Task updatedTaskObj = taskRepository.save(task);
@@ -164,5 +176,14 @@ public class TaskServiceImp implements TaskService{
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new
                 ResourceNotFoundException("user not exists with the given id " + userId));
         task.setStatus(Status.ARCHIVED);
+    }
+
+    private String filterOffensiveWords(String description) {
+        List<OffensiveWords> offensiveWords = offensiveWordsRepository.findAll();
+        for (OffensiveWords term : offensiveWords) {
+            description = description.replaceAll("(?i)\\b" + Pattern.quote(term.getTerm())
+                    + "\\b", "*"); //regex
+        }
+        return description;
     }
 }
