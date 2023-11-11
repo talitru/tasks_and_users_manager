@@ -4,6 +4,7 @@ import com.shufersalOnline.tasksAndUsersApi.entity.OffensiveWords;
 import com.shufersalOnline.tasksAndUsersApi.repository.OffensiveWordsRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 @Component
 public class OffensiveWordsLoader {
@@ -21,7 +23,9 @@ public class OffensiveWordsLoader {
     public ResponseEntity<String> loadOffensiveWords(){
         //read the file and save the terms to database
         // each line ia a row in the table
-        try (BufferedReader reader = new BufferedReader(new FileReader("offensiveWords.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                new ClassPathResource("offensiveWords.txt").getInputStream()))) {
+
             String line;
 
             while ((line = reader.readLine()) != null) {

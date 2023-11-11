@@ -42,10 +42,10 @@ public class TaskController {
 
     //create task
     @PostMapping("/users/{userId}/admin/tasks")
-    public ResponseEntity<TaskDto> createTask(@PathVariable Long taskId,
+    public ResponseEntity<TaskDto> createTask(@PathVariable Long userId,
                                               @RequestBody TaskDto taskDto){
 
-        TaskDto newTaskDto = taskService.createTask(taskId,taskDto);
+        TaskDto newTaskDto = taskService.createTask(userId,taskDto);
         return ResponseEntity.ok(newTaskDto);
     }
 

@@ -105,7 +105,7 @@ public class TaskServiceImp implements TaskService{
                 ResourceNotFoundException("user not exists with the given id "+userId));
 
         // Filter offensive words in the updated task description
-        String filteredDescription = filterOffensiveWords(updatedTask.getDescription());
+       String filteredDescription = filterOffensiveWords(updatedTask.getDescription());
 
         task.setTitle(updatedTask.getTitle());
         task.setDescription(filteredDescription);
@@ -180,9 +180,11 @@ public class TaskServiceImp implements TaskService{
 
     private String filterOffensiveWords(String description) {
         List<OffensiveWords> offensiveWords = offensiveWordsRepository.findAll();
-        for (OffensiveWords term : offensiveWords) {
-            description = description.replaceAll("(?i)\\b" + Pattern.quote(term.getTerm())
-                    + "\\b", "*"); //regex
+        String patternString;
+        for (OffensiveWords offensiveWord : offensiveWords) {
+            patternString = Pattern.quote(offensiveWord.getTerm());
+            description = description.replaceAll("(?i)\\b" + patternString
+                    + "\\b", "*".repeat(offensiveWord.getTerm().length())); //regex
         }
         return description;
     }
