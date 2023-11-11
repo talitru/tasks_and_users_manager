@@ -31,7 +31,7 @@ public class OffensiveWordsLoader {
             while ((line = reader.readLine()) != null) {
                 OffensiveWords term = new OffensiveWords();
                 term.setTerm(line);
-               offensiveWordsRepository.save(term);
+                offensiveWordsRepository.save(term);
             }
             return ResponseEntity.ok("Offensive words loaded successfully");
         } catch (IOException e) {
